@@ -1,0 +1,54 @@
+const verbos = [
+  { presente: "am/is", pasado: "was" },
+  { presente: "are", pasado: "were" },
+  { presente: "do", pasado: "did" },
+  // Resto de los verbos aquí...
+];
+
+let currentIndex = 0;
+let score = 0;
+let lives = 5;
+
+function displayVerb() {
+  document.getElementById("presentVerb").textContent = verbos[currentIndex].presente;
+}
+
+function checkAnswer() {
+  const answerInput = document.getElementById("answerInput");
+  const feedback = document.getElementById("feedback");
+  const userAnswer = answerInput.value.trim().toLowerCase();
+  const correctAnswer = verbos[currentIndex].pasado.toLowerCase();
+  
+  if (userAnswer === correctAnswer) {
+    feedback.textContent = "¡Felicitaciones ZAHIRA!";
+    score += 10;
+    currentIndex++;
+    answerInput.value = "";
+    displayVerb();
+  } else {
+    feedback.textContent = `!Respuesta incorrecta¡. El verbo en pasado es: "${correctAnswer}".`;
+    lives--;
+    document.getElementById("lives").textContent = `Vidas restantes: ${lives}`;
+    if (lives === 0) {
+      endGame();
+      return;
+    }
+  }
+
+  document.getElementById("score").textContent = `Puntaje: ${score}`;
+
+  if (currentIndex === verbos.length) {
+    endGame();
+  }
+}
+
+function endGame() {
+  const feedback = document.getElementById("feedback");
+  const scoreDisplay = document.getElementById("score");
+  feedback.textContent = `¡Fin del juego! Puntaje total: ${score}`;
+  scoreDisplay.textContent = "";
+  document.getElementById("answerInput").disabled = true;
+  document.querySelector("button").disabled = true;
+}
+
+displayVerb();
